@@ -1,5 +1,7 @@
 package br.eti.gabrielmedeiros.looke.di
 
+import br.eti.gabrielmedeiros.looke.repository.ProductsRepository
+import br.eti.gabrielmedeiros.looke.service.ProductsService
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
@@ -12,12 +14,12 @@ val networkModule = module {
 }
 
 val productsModule = module {
-//    factory { provideProductsService(retrofit = get()) }
-//    factory { ProductsRepository(productsService = get()) }
+    factory { provideProductsService(retrofit = get()) }
+    factory { ProductsRepository(productsService = get()) }
 //    viewModel { MainViewModel(productsRepository = get()) }
 }
 
-//fun provideProductsService(retrofit: Retrofit): ProductsService = retrofit.create(ProductsService::class.java)
+fun provideProductsService(retrofit: Retrofit): ProductsService = retrofit.create(ProductsService::class.java)
 
 fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
