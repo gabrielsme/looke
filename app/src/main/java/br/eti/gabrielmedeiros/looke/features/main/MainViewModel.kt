@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.eti.gabrielmedeiros.looke.base.Resource
 import br.eti.gabrielmedeiros.looke.model.Product
+import br.eti.gabrielmedeiros.looke.model.Topping
 import br.eti.gabrielmedeiros.looke.repository.ProductsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,19 +16,19 @@ class MainViewModel(
     private val productsRepository: ProductsRepository
 ) : ViewModel() {
 
-    private val _products = MutableLiveData<Resource<List<Product>>>()
-    val products: LiveData<Resource<List<Product>>>
-        get() = _products
+    private val _toppings = MutableLiveData<Resource<List<Topping>>>()
+    val toppings: LiveData<Resource<List<Topping>>>
+        get() = _toppings
 
-    fun getProducts() {
-        _products.value = Resource.Loading
+    fun getToppings() {
+        _toppings.value = Resource.Loading
 
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO) {
-                productsRepository.get()
+                productsRepository.getToppings()
             }
 
-            _products.value = result
+            _toppings.value = result
         }
     }
 }

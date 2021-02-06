@@ -2,15 +2,14 @@ package br.eti.gabrielmedeiros.looke.features.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import br.eti.gabrielmedeiros.looke.R
 import br.eti.gabrielmedeiros.looke.base.Resource
 import br.eti.gabrielmedeiros.looke.databinding.ActivityMainBinding
 import br.eti.gabrielmedeiros.looke.model.Product
+import br.eti.gabrielmedeiros.looke.model.Topping
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -26,16 +25,16 @@ class MainActivity : AppCompatActivity() {
 
         setupObservers()
 
-        viewModel.getProducts()
+        viewModel.getToppings()
     }
 
     private fun setupObservers() {
-        viewModel.products.observe(this) {
+        viewModel.toppings.observe(this) {
             setupProducts(it)
         }
     }
 
-    private fun setupProducts(resource: Resource<List<Product>>) {
+    private fun setupProducts(resource: Resource<List<Topping>>) {
         showProgressBar(false)
 
         when (resource) {
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             is Resource.NetworkError -> showToast(resource.error?.error ?: getString(R.string.without_internet))
             is Resource.GenericError -> showToast(resource.error?.error ?: getString(R.string.unknown_error))
             is Resource.Success -> {
-                val adapter = MainProductsAdapter(resource.value)
+                val adapter = MainToppingsAdapter(resource.value)
                 binding.recyclerviewProducts.adapter = adapter
                 binding.recyclerviewProducts.layoutManager = LinearLayoutManager(this)
             }
